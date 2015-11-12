@@ -40,3 +40,9 @@ Método de pago para Redsys para Magento compatible con SHA-256 y parche SUPEE-6
 * Pruebas con SSL/TLS
 * Doble notificaciones (email de Redsys)
 * Refactorización
+
+### Soporte técnico
+
+* Web: [http://devopensource.com](devopensource.com)
+* Twitter: [https://twitter.com/dev_opensource](https://twitter.com/dev_opensource)
+
