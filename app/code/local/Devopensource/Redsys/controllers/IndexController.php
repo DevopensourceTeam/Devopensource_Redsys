@@ -47,7 +47,6 @@ class Devopensource_Redsys_IndexController extends Mage_Core_Controller_Front_Ac
         $redsys->setParameter("Ds_Merchant_ConsumerLanguage", $language);
         $redsys->setParameter("Ds_Merchant_ProductDescription", $productsDescription);
         $redsys->setParameter("Ds_Merchant_Titular", $nameStore);
-        $redsys->setParameter("Ds_Merchant_MerchantData", sha1($urlStore));
         $redsys->setParameter("Ds_Merchant_MerchantName", $nameStore);
         $redsys->setParameter("Ds_Merchant_PayMethods", $payMethods);
 
@@ -104,7 +103,7 @@ class Devopensource_Redsys_IndexController extends Mage_Core_Controller_Front_Ac
                 && intval(strval($terminalmagento)) == intval(strval($terminal))
             ) {
                 $responsecode = intval($responsecode);
-                if ($responsecode < 101){
+                if ($responsecode <= 99){
                     $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
                     $transaction_amount = number_format($order->getBaseGrandTotal(),2,'', '');
                     $amountOrder = (float)$transaction_amount;

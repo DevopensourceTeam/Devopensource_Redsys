@@ -239,8 +239,21 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
                 return 'Denegacion sin especificar Motivo';
             case '191':
                 return 'Fecha de caducidad erronea';
+            case '201':
+                return 'Transacción denegada porque la fecha de caducidad de la tarjeta que se ha informado en el pago, es anterior a la actualmente vigente';
             case '202':
                 return 'Tarjeta en excepcion transitoria o bajo sospecha de fraude con retirada de tarjeta';
+            case '204':
+                return 'Operación no permitida para ese tipo de tarjeta';
+            case '207':
+                return 'El banco emisor no permite una autorización automática. Es necesario contactar telefónicamente con su centro autorizador para obtener una aprobación manual';
+            case '208':
+            case '209':
+                return 'Tarjeta bloqueada por el banco emisor debido a que el titular le ha manifestado que le ha sido robada o perdida';
+            case '208':
+                return 'Es erróneo el código CVV2/CVC2 informado por el comprador';
+            case '290':
+                return 'Transacción denegada por el banco emisor pero sin que este dé detalles acerca del motivo';
             case '904':
                 return 'Comercio no registrado en FUC.';
             case '909':
