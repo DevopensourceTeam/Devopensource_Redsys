@@ -26,23 +26,23 @@ Método de pago para Redsys para Magento compatible con SHA-256 y parche SUPEE-6
 
 ### Cómo instalarlo
 
-* Backup de todo previo
-* Mediante FTP
+* [Documentación](https://github.com/DevopensourceTeam/Devopensource_Redsys/wiki/Como-instalar-el-m%C3%B3dulo)
 
 ### Cómo Configurarlo
 
-* Pendiente de documentar
+* [Documentación](https://github.com/DevopensourceTeam/Devopensource_Redsys/wiki)
+ 
+### Histórico de cambios (changelog)
 
-### Próximos cambios
+* [Acceder al enlace para ver resumen de cambios](https://github.com/DevopensourceTeam/Devopensource_Redsys/wiki/Cambios-y-Mejoras)
 
-* Solucionar Warnings (Pear)
-* Mejora de los status de pedido
-* Pruebas con SSL/TLS
-* Doble notificaciones (email de Redsys)
-* Refactorización
+### Próximos cambios (Backlog)
+
+* [Acceder al enlace para ver resumen de cambios](https://github.com/DevopensourceTeam/Devopensource_Redsys/wiki/Cambios-y-Mejoras)
 
 ### Soporte técnico
 
+* Principal canal para notificar errores o dudas: [https://github.com/DevopensourceTeam/Devopensource_Redsys/issues](https://github.com/DevopensourceTeam/Devopensource_Redsys/issues) 
 * Web: [http://devopensource.com](http://devopensource.com)
 * Twitter: [https://twitter.com/dev_opensource](https://twitter.com/dev_opensource)
 
