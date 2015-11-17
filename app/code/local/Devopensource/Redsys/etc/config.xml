@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Devopensource_Redsys>
-            <version>0.1.0</version>
+            <version>0.1.1</version>
         </Devopensource_Redsys>
     </modules>
     <global>
@@ -60,18 +60,20 @@
     <default>
         <payment>
             <redsys>
-                <active>1</active>
+                <active>0</active>
+                <enviroment>0</enviroment>
                 <model>redsys/redsys</model>
+                <currency>0</currency>
                 <autoinvoice>0</autoinvoice>
                 <order_status>pending</order_status>
                 <redirect_status>pending</redirect_status>
                 <confirm_status>processing</confirm_status>
                 <error_status>canceled</error_status>
                 <title>Card Payment</title>
+                <message_credit_card>payment by credit card or debit 100% safe</message_credit_card>
                 <recover_cart>1</recover_cart>
-                <cancel_denied_order>1</cancel_denied_order>
                 <transaction>0</transaction>
-                <merchanturl>{{secure_base_url}}redsys/index/callback</merchanturl>
+                <callback>0</callback>
             </redsys>
         </payment>
     </default>

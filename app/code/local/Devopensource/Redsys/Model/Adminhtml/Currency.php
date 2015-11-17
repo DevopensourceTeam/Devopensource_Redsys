@@ -11,4 +11,3 @@ class Devopensource_Redsys_Model_Adminhtml_Currency
     }
 
 }
-?>

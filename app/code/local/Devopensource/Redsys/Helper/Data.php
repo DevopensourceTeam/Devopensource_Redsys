@@ -25,74 +25,70 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
     }
 
     public function getUrlStore(){
-        $url = Mage::getStoreConfig('payment/redsys/merchanturl', Mage::app()->getStore());
+        $url = Mage::getStoreConfig('payment/redsys/callback', Mage::app()->getStore());
 
-        return $url;
+        if ($url==0) {
+            return Mage::getStoreConfig('web/unsecure/base_url', Mage::app()->getStore())."redsys/index/callback";
+        }elseif($url==1){
+            return Mage::getStoreConfig('web/secure/base_url', Mage::app()->getStore())."redsys/index/callback";
+        }else{
+            return Mage::getStoreConfig('payment/redsys/callbackurl', Mage::app()->getStore());
+        }
     }
 
     public function getUrlEnviroment(){
-        $altenviroment = Mage::getStoreConfig('payment/redsys/alternativeenviroment', Mage::app()->getStore());
+        $enviroment = Mage::getStoreConfig('payment/redsys/enviroment', Mage::app()->getStore());
 
-        if(!isset($altenviroment) || trim($altenviroment)==""){
-            $enviroment = Mage::getStoreConfig('payment/redsys/enviroment', Mage::app()->getStore());
-
-            if ($enviroment) {
-                return "http://sis-d.redsys.es/sis/realizarPago/utf-8";
-            }else{
-                return "https://sis-t.redsys.es:25443/sis/realizarPago/utf-8";
-            }
+        if ($enviroment==0) {
+            return "http://sis-d.redsys.es/sis/realizarPago/utf-8";
+        }elseif($enviroment==1){
+            return "https://sis-t.redsys.es:25443/sis/realizarPago/utf-8";
+        }else{
+            return Mage::getStoreConfig('payment/redsys/alternativeenviroment', Mage::app()->getStore());
         }
-
-        return $altenviroment;
     }
 
     public function getLanguages(){
-        $enabled = Mage::getStoreConfig('payment/redsys/languages', Mage::app()->getStore());
-
-        if ($enabled == "0") {
-            $language = "0";
-        } else {
-            $locale = substr(Mage::getStoreConfig('general/locale/code', Mage::app()->getStore()->getId()), 0, 2);
-            switch ($locale) {
-                case 'es':
-                    $language = '001';
-                    break;
-                case 'en':
-                    $language = '002';
-                    break;
-                case 'ca':
-                    $language = '003';
-                    break;
-                case 'fr':
-                    $language = '004';
-                    break;
-                case 'de':
-                    $language = '005';
-                    break;
-                case 'nl':
-                    $language = '006';
-                    break;
-                case 'it':
-                    $language = '007';
-                    break;
-                case 'sv':
-                    $language = '008';
-                    break;
-                case 'pt':
-                    $language = '009';
-                    break;
-                case 'pl':
-                    $language = '011';
-                    break;
-                case 'gl':
-                    $language = '012';
-                    break;
-                case 'eu':
-                    $language = '013';
-                    break;
-                default:
-                    $language = '002';
-            }
+        $locale = substr(Mage::getStoreConfig('general/locale/code', Mage::app()->getStore()->getId()), 0, 2);
+        switch ($locale) {
+            case 'es':
+                $language = '001';
+                break;
+            case 'en':
+                $language = '002';
+                break;
+            case 'ca':
+                $language = '003';
+                break;
+            case 'fr':
+                $language = '004';
+                break;
+            case 'de':
+                $language = '005';
+                break;
+            case 'nl':
+                $language = '006';
+                break;
+            case 'it':
+                $language = '007';
+                break;
+            case 'sv':
+                $language = '008';
+                break;
+            case 'pt':
+                $language = '009';
+                break;
+            case 'pl':
+                $language = '011';
+                break;
+            case 'gl':
+                $language = '012';
+                break;
+            case 'eu':
+                $language = '013';
+                break;
+            default:
+                $language = '001';
         }
 
         return $language;
