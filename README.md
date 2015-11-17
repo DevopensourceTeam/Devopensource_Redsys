@@ -30,7 +30,7 @@ Método de pago para Redsys para Magento compatible con SHA-256 y parche SUPEE-6
 
 ### Cómo Configurarlo
 
-* [Documentación](https://github.com/DevopensourceTeam/Devopensource_Redsys/wiki)
+* [Documentación](https://github.com/DevopensourceTeam/Devopensource_Redsys/wiki/Configuraci%C3%B3n-admin-Magento)
  
 ### Histórico de cambios (changelog)
 
