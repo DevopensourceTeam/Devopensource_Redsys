@@ -40,7 +40,7 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
         $enviroment = Mage::getStoreConfig('payment/redsys/enviroment', Mage::app()->getStore());
 
         if ($enviroment==0) {
-            return "http://sis-d.redsys.es/sis/realizarPago/utf-8";
+            return "https://sis.redsys.es/sis/realizarPago/utf-8";
         }elseif($enviroment==1){
             return "https://sis-t.redsys.es:25443/sis/realizarPago/utf-8";
         }else{
