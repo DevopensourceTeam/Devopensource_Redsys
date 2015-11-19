@@ -117,11 +117,10 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
         $_order->save();
     }
 
-    public function stateConfirmTpv($_order){
+    public function stateConfirmTpv($_order,$comment){
         $this->fixCreditCustomer();
         $status = Mage::getStoreConfig('payment/redsys/confirm_status', Mage::app()->getStore());
         $state = 'processing';
-        $comment = $this->__('TPV payment accepted.');
         $isCustomerNotified = true;
         $_order->setState($state, $status, $comment, $isCustomerNotified);
         $_order->save();

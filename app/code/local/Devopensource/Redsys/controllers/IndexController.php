@@ -75,20 +75,20 @@ class Devopensource_Redsys_IndexController extends Mage_Core_Controller_Front_Ac
 
         $params = $this->getRequest()->getPost();
         if (count($params) > 0){
-            $datos    = $_POST["Ds_MerchantParameters"];
+            $data    = $_POST["Ds_MerchantParameters"];
             $signature_response    = $_POST["Ds_Signature"];
 
             $redsys = new RedsysAPI;
-            $redsys->decodeMerchantParameters($datos);
+            $redsys->decodeMerchantParameters($data);
 
             $sha256key = Mage::getStoreConfig('payment/redsys/sha256key',Mage::app()->getStore());
-            $signature = $redsys->createMerchantSignatureNotif($sha256key,$datos);
+            $signature = $redsys->createMerchantSignatureNotif($sha256key,$data);
 
             $amount     = $redsys->getParameter('Ds_Amount');
             $orderId      = $redsys->getParameter('Ds_Order');
             $merchantcode    = $redsys->getParameter('Ds_MerchantCode');
             $terminal  = $redsys->getParameter('Ds_Terminal');
-            $responsecode = $redsys->getParameter('Ds_Response');
+            $response = $redsys->getParameter('Ds_Response');
             $transaction = $redsys->getParameter('Ds_TransactionType');
 
             $merchantcodemagento = Mage::getStoreConfig('payment/redsys/merchantcode',Mage::app()->getStore());
@@ -102,8 +102,9 @@ class Devopensource_Redsys_IndexController extends Mage_Core_Controller_Front_Ac
                 && $merchantcode == $merchantcodemagento
                 && intval(strval($terminalmagento)) == intval(strval($terminal))
             ) {
-                $responsecode = intval($responsecode);
+                $responsecode = intval($response);
                 if ($responsecode <= 99){
+                    $authorisationcode = $redsys->getParameter('Ds_AuthorisationCode');
                     $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
                     $transaction_amount = number_format($order->getBaseGrandTotal(),2,'', '');
                     $amountOrder = (float)$transaction_amount;
@@ -116,14 +117,15 @@ class Devopensource_Redsys_IndexController extends Mage_Core_Controller_Front_Ac
 
                     try {
                         $this->helper->createInvoice($order);
-                        $this->helper->stateConfirmTpv($order);
+                        $comment = $this->__('TPV payment accepted. (response: %s, authorization: %s)',$response,$authorisationcode);
+                        $this->helper->stateConfirmTpv($order,$comment);
                         $order->sendNewOrderEmail();
                     } catch (Exception $e) {
                         $order->addStatusHistoryComment($this->__("TPV Error: %s",$e->getMessage()), false);
                         $order->save();
                     }
                 } else {
-                    $errorMessage = $this->helper->comentarioReponse($responsecode);
+                    $errorMessage = $this->helper->comentarioReponse($responsecode)." ".$this->__("(response:%s)",$response);
                     $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
                     $this->helper->stateErrorTpv($order,$errorMessage);
                     $this->helper->restoreStock($order);
