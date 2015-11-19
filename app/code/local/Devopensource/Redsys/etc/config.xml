@@ -74,7 +74,7 @@
                 <message_credit_card>payment by credit card or debit 100% safe</message_credit_card>
                 <recover_cart>1</recover_cart>
                 <transaction>0</transaction>
-                <callback>0</callback>
+                <callback>1</callback>
             </redsys>
         </payment>
     </default>
