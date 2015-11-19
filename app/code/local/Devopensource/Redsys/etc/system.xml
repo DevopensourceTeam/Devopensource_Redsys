@@ -11,174 +11,184 @@
                     <show_in_store>1</show_in_store>
                     <fields>
                         <hint>
-				<frontend_model>devopensource_redsys/adminhtml_hint</frontend_model>
-				<sort_order>0</sort_order>
-				<show_in_default>1</show_in_default>
-				<show_in_website>1</show_in_website>
-				<show_in_store>1</show_in_store>
+                            <frontend_model>devopensource_redsys/adminhtml_hint</frontend_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                         </hint>
                         <active translate="label" module="payment">
-				<label>Enabled</label>
-				<frontend_type>select</frontend_type>
-				<source_model>adminhtml/system_config_source_yesno</source_model>
-				<sort_order>10</sort_order>
-				<show_in_default>1</show_in_default>
-				<show_in_website>1</show_in_website>
-				<show_in_store>1</show_in_store>
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                         </active>
+                        <developermode translate="label" module="payment">
+                            <label>Enabled in developer restriction</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><active>0</active></depends>
+                        </developermode>
                         <title translate="label" module="payment">
-				<label>Title</label>
-				<frontend_type>text</frontend_type>
-				<sort_order>20</sort_order>
-				<show_in_default>1</show_in_default>
-				<show_in_website>1</show_in_website>
-				<show_in_store>1</show_in_store>
+            				<label>Title</label>
+            				<frontend_type>text</frontend_type>
+            				<sort_order>20</sort_order>
+            				<show_in_default>1</show_in_default>
+            				<show_in_website>1</show_in_website>
+            				<show_in_store>1</show_in_store>
                         </title>
-			<enviroment translate="label">
-				<label>Enviroment</label>
-				<frontend_type>select</frontend_type>
-				<source_model>redsys/Adminhtml_Enviroment</source_model>
-				<sort_order>30</sort_order>
-				<comment><![CDATA[Real Enviroment: https://sis.redsys.es/sis/realizarPago/utf-8 Test Enviroment: https://sis-t.redsys.es:25443/sis/realizarPago/utf-8]]></comment>
-				<show_in_default>1</show_in_default>
-				<show_in_website>1</show_in_website>
-				<show_in_store>1</show_in_store>
+                        <enviroment translate="label">
+                            <label>Enviroment</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>redsys/Adminhtml_Enviroment</source_model>
+                            <sort_order>30</sort_order>
+                            <comment><![CDATA[Real Enviroment: https://sis.redsys.es/sis/realizarPago/utf-8 Test Enviroment: https://sis-t.redsys.es:25443/sis/realizarPago/utf-8]]></comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                         </enviroment>
                         <alternativeenviroment translate="label comment">
-				<label>Url enviroment</label>
-				<frontend_type>text</frontend_type>
-				<sort_order>31</sort_order>
-				<show_in_default>1</show_in_default>
-				<show_in_website>1</show_in_website>
-				<show_in_store>1</show_in_store>
-				<validate>required-entry</validate>
-				<depends><enviroment>2</enviroment></depends>
+                            <label>Url enviroment</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>31</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends><enviroment>2</enviroment></depends>
                         </alternativeenviroment>
-			<namestore translate="label">
-				<label>Store Name</label>
-				<frontend_type>text</frontend_type>
-				<sort_order>40</sort_order>
-				<show_in_default>1</show_in_default>
-				<show_in_website>1</show_in_website>
-				<show_in_store>1</show_in_store>
+                        <namestore translate="label">
+                            <label>Store Name</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                         </namestore>
-				<merchantcode translate="label">
-				<label>FUC</label>
-				<frontend_type>text</frontend_type>
-				<sort_order>50</sort_order>
-				<show_in_default>1</show_in_default>
-				<show_in_website>1</show_in_website>
-				<show_in_store>1</show_in_store>
+                        <merchantcode translate="label">
+                            <label>FUC</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                         </merchantcode>
                         <sha256key translate="label">
-				<label>SHA-256 Key</label>
-				<frontend_type>password</frontend_type>
-				<sort_order>60</sort_order>
-				<show_in_default>1</show_in_default>
-				<show_in_website>1</show_in_website>
-				<show_in_store>1</show_in_store>
+                            <label>SHA-256 Key</label>
+                            <frontend_type>password</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                         </sha256key>
-			<terminal translate="label">
-				<label>Number of terminal</label>
-				<frontend_type>text</frontend_type>
-				<sort_order>70</sort_order>
-				<show_in_default>1</show_in_default>
-				<show_in_website>1</show_in_website>
-				<show_in_store>1</show_in_store>
+                        <terminal translate="label">
+                            <label>Number of terminal</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                         </terminal>
-			<currency translate="label">
-				<label>Currency</label>
-				<frontend_type>select</frontend_type>
-				<source_model>redsys/Adminhtml_Currency</source_model>
-				<sort_order>80</sort_order>
-				<show_in_default>1</show_in_default>
-				<show_in_website>1</show_in_website>
-				<show_in_store>1</show_in_store>
-			</currency>
+                        <currency translate="label">
+                            <label>Currency</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>redsys/Adminhtml_Currency</source_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </currency>
                         <autoinvoice translate="label comment">
-				<label>Create invoice automatically</label>
-				<comment>Only if payment is completed successfully</comment>
-				<frontend_type>select</frontend_type>
-				<source_model>adminhtml/system_config_source_yesno</source_model>
-				<sort_order>110</sort_order>
-				<show_in_default>1</show_in_default>
-				<show_in_website>1</show_in_website>
-				<show_in_store>1</show_in_store>
+                            <label>Create invoice automatically</label>
+                            <comment>Only if payment is completed successfully</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                         </autoinvoice>
                         <order_status translate="label" module="payment">
-				<label>New order status</label>
-				<frontend_type>select</frontend_type>
-				<source_model>adminhtml/system_config_source_order_status</source_model>
-				<sort_order>120</sort_order>
-				<show_in_default>1</show_in_default>
-				<show_in_website>1</show_in_website>
-				<show_in_store>1</show_in_store>
+                            <label>New order status</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_order_status</source_model>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                         </order_status>
                         <redirect_status translate="label">
-				<label>Estado para pedido al entrar en TPV</label>
-				<frontend_type>select</frontend_type>
-				<source_model>adminhtml/system_config_source_order_status</source_model>
-				<sort_order>130</sort_order>
-				<show_in_default>1</show_in_default>
-				<show_in_website>1</show_in_website>
-				<show_in_store>1</show_in_store>
+                            <label>Estado para pedido al entrar en TPV</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_order_status</source_model>
+                            <sort_order>130</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                         </redirect_status>
                         <confirm_status translate="label">
-				<label>Order state validated by redsys</label>
-				<frontend_type>select</frontend_type>
-				<source_model>adminhtml/system_config_source_order_status</source_model>
-				<sort_order>140</sort_order>
-				<show_in_default>1</show_in_default>
-				<show_in_website>1</show_in_website>
-				<show_in_store>1</show_in_store>
+                            <label>Order state validated by redsys</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_order_status</source_model>
+                            <sort_order>140</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                         </confirm_status>
                         <error_status translate="label">
-				<label>Order state canceled by redsys</label>
-				<frontend_type>select</frontend_type>
-				<source_model>adminhtml/system_config_source_order_status</source_model>
-				<sort_order>140</sort_order>
-				<show_in_default>1</show_in_default>
-				<show_in_website>1</show_in_website>
-				<show_in_store>1</show_in_store>
+                            <label>Order state canceled by redsys</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_order_status</source_model>
+                            <sort_order>140</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                         </error_status>
                         <message_credit_card translate="label">
-				<label>Description payment method</label>
-				<frontend_type>textarea</frontend_type>
-				<sort_order>170</sort_order>
-				<show_in_default>1</show_in_default>
-				<show_in_website>1</show_in_website>
-				<show_in_store>1</show_in_store>
+                            <label>Description payment method</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>170</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                         </message_credit_card>
                         <recover_cart translate="label">
-				<label>Recovery cart</label>
-				<frontend_type>select</frontend_type>
-				<source_model>adminhtml/system_config_source_yesno</source_model>
-				<sort_order>180</sort_order>
-				<show_in_default>1</show_in_default>
-				<show_in_website>1</show_in_website>
-				<show_in_store>1</show_in_store>
-				<comment><![CDATA[in case of failure the client does not lose Cart]]></comment>
+                            <label>Recovery cart</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>180</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[in case of failure the client does not lose Cart]]></comment>
                         </recover_cart>
                         <callback translate="label">
-				<label>Callback</label>
-				<frontend_type>select</frontend_type>
-				<source_model>redsys/Adminhtml_Callback</source_model>
-				<sort_order>185</sort_order>
-				<show_in_default>1</show_in_default>
-				<show_in_website>1</show_in_website>
-				<show_in_store>1</show_in_store>
-				<comment><![CDATA[Http: <strong>{{unsecure_base_url}}redsys/index/callback</strong> Https:  <strong>{{secure_base_url}}redsys/index/callback</strong>]]></comment>
+                            <label>Callback</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>redsys/Adminhtml_Callback</source_model>
+                            <sort_order>185</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Http: <strong>{{unsecure_base_url}}redsys/index/callback</strong> Https:  <strong>{{secure_base_url}}redsys/index/callback</strong>]]></comment>
                         </callback>
                         <callbackurl translate="label comment">
-				<label>Url Callback</label>
-				<frontend_type>text</frontend_type>
-				<sort_order>190</sort_order>
-				<comment><![CDATA[Change if necessary.]]></comment>
-				<show_in_default>1</show_in_default>
-				<show_in_website>1</show_in_website>
-				<show_in_store>1</show_in_store>
-				<validate>required-entry</validate>
-				<depends><callback>2</callback></depends>
+                            <label>Url Callback</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>190</sort_order>
+                            <comment><![CDATA[Change if necessary.]]></comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends><callback>2</callback></depends>
                         </callbackurl>
                     </fields>
                 </redsys>

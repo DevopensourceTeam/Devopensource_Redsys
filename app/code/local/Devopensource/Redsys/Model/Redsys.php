@@ -20,5 +20,31 @@ class Devopensource_Redsys_Model_Redsys extends Mage_Payment_Model_Method_Abstra
     public function getOrderPlaceRedirectUrl() {
 		return Mage::getUrl('redsys/index/redirect', array('_secure' => true));
 	}
+
+
+    public function isAvailable($quote = null)
+    {
+
+        $checkResult = new StdClass;
+        $isActive = (bool)(int)$this->getConfigData('active', $quote ? $quote->getStoreId() : null);
+
+        $allowedIps = Mage::getStoreConfig('dev/restrict/allow_ips',  Mage::app()->getStore());
+        if(!$isActive && !empty($allowedIps) && Mage::getStoreConfig('payment/redsys/developermode', Mage::app()->getStore()) && Mage::helper('core')->isDevAllowed()){
+            $isActive=true;
+        }
+
+        $checkResult->isAvailable = $isActive;
+        $checkResult->isDeniedInConfig = !$isActive; // for future use in observers
+        Mage::dispatchEvent('payment_method_is_active', array(
+            'result'          => $checkResult,
+            'method_instance' => $this,
+            'quote'           => $quote,
+        ));
+
+        if ($checkResult->isAvailable && $quote) {
+            $checkResult->isAvailable = $this->isApplicableToQuote($quote, self::CHECK_RECURRING_PROFILES);
+        }
+        return $checkResult->isAvailable;
+    }
 }
 

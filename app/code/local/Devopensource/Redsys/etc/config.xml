@@ -61,6 +61,7 @@
         <payment>
             <redsys>
                 <active>0</active>
+                <developermode>1</developermode>
                 <enviroment>0</enviroment>
                 <model>redsys/redsys</model>
                 <currency>0</currency>
