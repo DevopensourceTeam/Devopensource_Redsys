@@ -98,13 +98,16 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
     public function getCurrency(){
         $currency = Mage::getStoreConfig('payment/redsys/currency', Mage::app()->getStore());
 
-        if ($currency == "0") {
-            $currency = "978";
-        } else {
-            $currency = "840";
+        switch ($currency) {
+            case '3':
+                return '392';
+            case '2':
+                return '826';
+            case '1':
+                return '840';
+            default:
+                return '978';
         }
-
-        return $currency;
     }
 
     public function stateInTpv($_order){
