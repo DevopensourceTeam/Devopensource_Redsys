@@ -26,7 +26,7 @@ class Devopensource_Redsys_IndexController extends Mage_Core_Controller_Front_Ac
 
         $this->helper->stateInTpv($_order);
 
-        $transaction_amount = number_format($_order->getBaseGrandTotal(), 2, '', '');
+        $transaction_amount = number_format($_order->getTotalDue(), 2, '', '');
         $amount = (float)$transaction_amount;
 
         $payMethods = "C";
@@ -106,7 +106,7 @@ class Devopensource_Redsys_IndexController extends Mage_Core_Controller_Front_Ac
                 if ($responsecode <= 99){
                     $authorisationcode = $redsys->getParameter('Ds_AuthorisationCode');
                     $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-                    $transaction_amount = number_format($order->getBaseGrandTotal(),2,'', '');
+                    $transaction_amount = number_format($order->getTotalDue(), 2, '', '');
                     $amountOrder = (float)$transaction_amount;
 
                     if ($amountOrder != $amount) {
