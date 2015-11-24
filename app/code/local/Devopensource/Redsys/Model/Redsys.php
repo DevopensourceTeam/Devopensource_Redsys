@@ -42,7 +42,15 @@ class Devopensource_Redsys_Model_Redsys extends Mage_Payment_Model_Method_Abstra
         ));
 
         if ($checkResult->isAvailable && $quote) {
-            $checkResult->isAvailable = $this->isApplicableToQuote($quote, self::CHECK_RECURRING_PROFILES);
+            $magentoVersion = Mage::getVersion();
+            if (version_compare($magentoVersion, '1.8', '>=')){
+                $checkResult->isAvailable = $this->isApplicableToQuote($quote, self::CHECK_RECURRING_PROFILES);
+            } else {
+                $implementsRecurring = $this->canManageRecurringProfiles();
+                if ($quote && !$implementsRecurring && $quote->hasRecurringItems()) {
+                    $checkResult->isAvailable = false;
+                }
+            }
         }
         return $checkResult->isAvailable;
     }
