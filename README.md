@@ -8,17 +8,18 @@ Método de pago para Redsys para Magento compatible con SHA-256 y parche SUPEE-6
 * Pagar mediante tarjeta de crédito o débito
 * Factura automática
 * Recuperación de carrito en caso de fallo TPV
-* Compatible SSL (pendiente comprobar)
+* Compatible HTTPS/SSL
 * Comentario de error en el pedido (vista admin)
 * Personalizacón estados de pedido
 * Compatible SHA-256, utilizamos la libreria de RedsysAPI
-* Pache con SUPEE-6788
+* Parche con SUPEE-6788
 * Compatible multiple-idioma, tambien envía parametro traducción de Redsys pasarela
-* Compatible multiple-tienda (por parametro pendiente de comprobar)
-* Pesonalizable: titulo, descripción
+* Compatible multiple-tienda
+* Personalizable: titulo, descripción
 * Posibilidad de cambiar URL de entorno desde el admin
 * Multiple Divisa
 * Función Callback para notificación de pagos desde Redsys
+* Documentación actualizada
 
 ### Requisitos
 
