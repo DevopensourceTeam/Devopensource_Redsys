@@ -12,7 +12,7 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
         $pos = 0;
 
         foreach ($items as $itemId => $item) {
-            $descriptionOrder .= $this->clean($item->getName());
+            $descriptionOrder .= $item->getName();
             $descriptionOrder .= " x " . $item->getQtyToInvoice();
 
             $pos++;
@@ -313,7 +313,7 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
         }
     }
 
-    private function fixCreditCustomer(){
+    protected function fixCreditCustomer(){
         if(Mage::registry('change_order_status_once')) Mage::unregister("change_order_status_once");
     }
 
@@ -321,7 +321,7 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
      * from http://stackoverflow.com/questions/14114411/remove-all-special-characters-from-a-string
      *
      * **/
-    function clean($string_data)
+    public function clean($string_data)
     {
         $string_data = Mage::helper('core')->removeAccents($string_data);
 
@@ -330,5 +330,18 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
 
         return preg_replace('/-+/', '-', $string_data); // Replaces multiple hyphens with single one.
     }
-    
+
+    public function createTransaction($order,$decodeData){
+        $data = json_decode($decodeData, true);
+        $payment = $order->getPayment();
+        $transaction = Mage::getModel('sales/order_payment_transaction');
+        $transaction->setOrderPaymentObject($payment);
+        $transaction->setTxnId($data['Ds_AuthorisationCode']);
+        $transaction->setOrder($order);
+        $transaction->setIsClosed(false);
+        $transaction->setAdditionalInformation("raw_details_info",$data);
+        $transaction->setTxnType(Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE);
+        $transaction->save();
+    }
+
 }

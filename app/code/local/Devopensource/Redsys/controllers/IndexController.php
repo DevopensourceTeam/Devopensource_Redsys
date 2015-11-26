@@ -9,9 +9,8 @@ class Devopensource_Redsys_IndexController extends Mage_Core_Controller_Front_Ac
     {
         $this->helper = Mage::helper('devopensource_redsys');
 
-        $_order = new Mage_Sales_Model_Order();
         $orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
-        $_order->loadByIncrementId($orderId);
+        $_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
 
         $nameStore = Mage::getStoreConfig('payment/redsys/namestore', Mage::app()->getStore());
         $merchantcode = Mage::getStoreConfig('payment/redsys/merchantcode', Mage::app()->getStore());
@@ -78,8 +77,8 @@ class Devopensource_Redsys_IndexController extends Mage_Core_Controller_Front_Ac
             $data    = $_POST["Ds_MerchantParameters"];
             $signature_response    = $_POST["Ds_Signature"];
 
-            $redsys = new RedsysAPI;
-            $redsys->decodeMerchantParameters($data);
+            $redsys     = new RedsysAPI;
+            $decodeData = $redsys->decodeMerchantParameters($data);
 
             $sha256key = Mage::getStoreConfig('payment/redsys/sha256key',Mage::app()->getStore());
             $signature = $redsys->createMerchantSignatureNotif($sha256key,$data);
@@ -120,6 +119,7 @@ class Devopensource_Redsys_IndexController extends Mage_Core_Controller_Front_Ac
                         $comment = $this->__('TPV payment accepted. (response: %s, authorization: %s)',$response,$authorisationcode);
                         $this->helper->stateConfirmTpv($order,$comment);
                         $order->sendNewOrderEmail();
+                        $this->helper->createTransaction($order,$decodeData);
                     } catch (Exception $e) {
                         $order->addStatusHistoryComment($this->__("TPV Error: %s",$e->getMessage()), false);
                         $order->save();
