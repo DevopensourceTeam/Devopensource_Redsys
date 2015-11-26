@@ -12,7 +12,7 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
         $pos = 0;
 
         foreach ($items as $itemId => $item) {
-            $descriptionOrder .= $item->getName();
+            $descriptionOrder .= $this->clean($item->getName());
             $descriptionOrder .= " x " . $item->getQtyToInvoice();
 
             $pos++;
