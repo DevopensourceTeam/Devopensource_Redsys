@@ -12,7 +12,7 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
         $pos = 0;
 
         foreach ($items as $itemId => $item) {
-            $descriptionOrder .= $item->getName();
+            $descriptionOrder .= $this->clean($item->getName());
             $descriptionOrder .= " x " . $item->getQtyToInvoice();
 
             $pos++;
@@ -317,4 +317,18 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
         if(Mage::registry('change_order_status_once')) Mage::unregister("change_order_status_once");
     }
 
+    /*
+     * from http://stackoverflow.com/questions/14114411/remove-all-special-characters-from-a-string
+     *
+     * **/
+    function clean($string_data)
+    {
+        $string_data = Mage::helper('core')->removeAccents($string_data);
+
+        $string_data = str_replace(' ', '-', $string_data); // Replaces all spaces with hyphens.
+        $string_data = preg_replace('/[^A-Za-z0-9\-]/', '', $string_data); // Removes special chars.
+
+        return preg_replace('/-+/', '-', $string_data); // Replaces multiple hyphens with single one.
+    }
+    
 }
