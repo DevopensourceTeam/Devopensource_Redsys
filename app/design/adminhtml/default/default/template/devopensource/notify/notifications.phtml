@@ -1,0 +1,4 @@
+<?php
+foreach ($this->getMessage() as $_message){ ?>
+    <div class="notification-global"><?php echo $_message->getTitle()?>: <strong><?php echo $_message->getDescription(); ?></strong> <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/notify/read',array('id' => $_message->getId())); ?>" /><?php echo $this->__('Mark as read') ?></a></div>
+<?php } ?>
