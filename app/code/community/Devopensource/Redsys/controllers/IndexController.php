@@ -147,12 +147,34 @@ class Devopensource_Redsys_IndexController extends Mage_Core_Controller_Front_Ac
 
     public function cancelAction()
     {
+        if (!empty($_GET) && Mage::getStoreConfig('payment/redsys/display_error_clients',Mage::app()->getStore()))
+        {
+            $this->helper = Mage::helper('devopensource_redsys');
+            $data    = $_GET["Ds_MerchantParameters"];
+            $signature_response    = $_GET["Ds_Signature"];
+
+            $redsys     = new RedsysAPI;
+            $redsys->decodeMerchantParameters($data);
+            $sha256key = Mage::getStoreConfig('payment/redsys/sha256key',Mage::app()->getStore());
+            $signature = $redsys->createMerchantSignatureNotif($sha256key,$data);
+
+            $response = $redsys->getParameter('Ds_Response');
+
+            if ($signature === $signature_response) {
+                $responsecode = intval($response);
+                $error = $this->helper->comentarioReponse($responsecode);
+            }
+        }
+
+        if(!isset($error)){
+            $error = $this->__('Denied transaction from Redsys.');
+        }
+
         $this->helper = Mage::helper('devopensource_redsys');
         $session = Mage::getSingleton('checkout/session');
         $this->helper->recoveryCart();
-        $session->addError($this->__('Denied transaction from Redsys.'));
+        $session->addError($error);
         $this->_redirect('checkout/cart');
-
     }
 
     public function successAction()

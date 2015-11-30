@@ -72,6 +72,7 @@
                 <error_status>canceled</error_status>
                 <title>Card Payment</title>
                 <message_credit_card>payment by credit card or debit 100% safe</message_credit_card>
+                <display_error_clients>0</display_error_clients>
                 <recover_cart>1</recover_cart>
                 <transaction>0</transaction>
                 <callback>1</callback>
