@@ -11,8 +11,18 @@
     max-width:75px;
 }
 
+.no-latest-version{
+    color: red;
+}
+
+.latest-version{
+    color: green;
+}
+
 </style>
 <div class="header_redsys">
-    <?php echo $this->__('Module developed by <a href="http://devopensource.com/">Devopensource.com</a> if you need support contact with <a href="mailto:info@devopensource.com" >info@devopensource.com</a> or help us keep the module <a href="https://github.com/DevopensourceTeam/Devopensource_Redsys" >in github</a>. You can view the <a href="https://github.com/DevopensourceTeam/Devopensource_Redsys/wiki">documentation here</a>'); ?> <img class="logo-redsys" src="http://modules.devopensource.com/assets/logo/devopensource_redsys.png" />
+    <?php echo $this->__('Module developed by <a href="http://devopensource.com/">Devopensource.com</a> if you need support contact with <a href="mailto:info@devopensource.com" >info@devopensource.com</a> or help us keep the module <a href="https://github.com/DevopensourceTeam/Devopensource_Redsys" >in github</a>. You can view the <a href="https://github.com/DevopensourceTeam/Devopensource_Redsys/wiki">documentation here</a>'); ?> <img class="logo-redsys" src="http://modules.devopensource.com/assets/logo/devopensource_redsys.png" /></br>
+    <p class="<?php if (Mage::helper('devopensource_redsys')->isCurrentVersionLatest()): echo 'latest-version'; else: echo 'no-latest-version'; endif; ?>"><strong><?php echo $this->__('Your version:') ?> <?php echo Mage::helper('devopensource_redsys')->getModuleName(); ?> v<?php echo Mage::helper('devopensource_redsys')->getCurrentVersion(); ?></strong></p>
+    <p><strong><?php echo $this->__('Latest version stable:') ?> <?php echo Mage::helper('devopensource_redsys')->getModuleName(); ?> v<?php echo Mage::helper('devopensource_redsys')->getLatestVersionStable(); ?></strong></p>
 </div>
 

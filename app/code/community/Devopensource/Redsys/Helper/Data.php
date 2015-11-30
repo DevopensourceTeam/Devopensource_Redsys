@@ -1,6 +1,8 @@
 <?php
 class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
 
+    CONST MODULE_URL_VERSION_STABLE = 'https://raw.githubusercontent.com/DevopensourceTeam/Devopensource_Redsys/master/app/code/community/Devopensource/Redsys/etc/config.xml';
+
     public function getMessage(){
         return Mage::getStoreConfig('payment/redsys/message_credit_card', Mage::app()->getStore());
     }
@@ -347,4 +349,35 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
         $transaction->save();
     }
 
+    public function getCurrentVersion(){
+
+        return (string) Mage::getConfig()->getNode('modules/'.$this->_getModuleName().'/version');
+    }
+
+    public function getModuleName(){
+
+        return (string) $this->_getModuleName();
+    }
+
+    public function getLatestVersionStable(){
+
+        $xmlObj      = simplexml_load_file(self::MODULE_URL_VERSION_STABLE);
+        $moduleName  = $this->getModuleName();
+
+        $versionLatestStable = $xmlObj->modules->$moduleName->version;
+
+        return $versionLatestStable;
+    }
+
+    public function isCurrentVersionLatest(){
+
+        $verCurrent = str_replace(".", "", $this->getCurrentVersion());
+        $verLatest = str_replace(".", "", $this->getLatestVersionStable());
+
+        if($verCurrent < $verLatest){
+           return false;
+        }
+
+        return true;
+    }
 }
