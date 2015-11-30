@@ -176,19 +176,22 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
                 $quantity = $item->getQtyOrdered();
                 $product_id = $item->getProductId();
                 $stock = Mage::getModel('cataloginventory/stock_item')->loadByProduct($product_id);
-                $stockQty = $stock->getQty();
-                $stock->setQty($stockQty + $quantity);
+                if($stock->getManageStock()){
+                    $stockQty = $stock->getQty();
+                    $stock->setQty($stockQty + $quantity);
 
-                if($stockQty + $quantity <= 0)
-                {
-                    $stock->setIsInStock(false);
+                    if($stockQty + $quantity <= 0 && $stock->getBackorders()==0)
+                    {
+                        $stock->setIsInStock(false);
+                    }elseif($stockQty + $quantity > 0){
+                        $stock->setIsInStock(true);
+                    }
+
+                    $stock->save();
                 }
 
-                $stock->save();
             }
         }
-
-
     }
 
     public function createInvoice($order){
