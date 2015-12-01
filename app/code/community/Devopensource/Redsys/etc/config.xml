@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Devopensource_Redsys>
-            <version>0.1.8</version>
+            <version>0.1.9</version>
         </Devopensource_Redsys>
     </modules>
     <global>
