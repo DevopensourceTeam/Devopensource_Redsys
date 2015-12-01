@@ -4,16 +4,19 @@ class Devopensource_Redsys_Model_Redsys extends Mage_Payment_Model_Method_Abstra
 {
 
     protected $_code = 'redsys';
+
     protected $_isGateway               = true;
     protected $_canAuthorize            = true;
     protected $_canCapture              = true;
     protected $_canCapturePartial       = true;
     protected $_canRefund               = true;
+    protected $_canRefundInvoicePartial = true;
     protected $_canVoid                 = true;
-    protected $_canUseInternal          = true;
+    protected $_canUseInternal          = false;
     protected $_canUseCheckout          = true;
-    protected $_canUseForMultishipping  = true;
-    protected $_canSaveCc = false;
+    protected $_canUseForMultishipping  = false;
+    protected $_canSaveCc               = false;
+
     protected $_formBlockType = 'devopensource_redsys/form';
 
 
