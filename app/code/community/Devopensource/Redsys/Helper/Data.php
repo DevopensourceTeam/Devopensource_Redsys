@@ -210,6 +210,12 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
             $this->fixCreditCustomer();
             $order->addStatusHistoryComment($this->__('Invoice %s created', $invoice->getIncrementId()), false);
             $order->save();
+
+            $sendinvoice = Mage::getStoreConfig('payment/redsys/sendinvoice', Mage::app()->getStore());
+            if($sendinvoice){
+                $invoice->sendEmail();
+            }
+
         }
     }
 

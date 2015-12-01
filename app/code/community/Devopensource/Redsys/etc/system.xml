@@ -115,6 +115,16 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </autoinvoice>
+                        <sendinvoice translate="label comment">
+                            <label>Send Email Customer Invoice</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><autoinvoice>1</autoinvoice></depends>
+                        </sendinvoice>
                         <order_status translate="label" module="payment">
                             <label>New order status</label>
                             <frontend_type>select</frontend_type>

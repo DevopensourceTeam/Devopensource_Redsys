@@ -115,10 +115,10 @@ class Devopensource_Redsys_IndexController extends Mage_Core_Controller_Front_Ac
                     }
 
                     try {
-                        $this->helper->createInvoice($order);
                         $comment = $this->__('TPV payment accepted. (response: %s, authorization: %s)',$response,$authorisationcode);
                         $this->helper->stateConfirmTpv($order,$comment);
                         $order->sendNewOrderEmail();
+                        $this->helper->createInvoice($order);
                         $this->helper->createTransaction($order,$decodeData);
                     } catch (Exception $e) {
                         $order->addStatusHistoryComment($this->__("TPV Error: %s",$e->getMessage()), false);
