@@ -20,6 +20,9 @@ Método de pago para Redsys para Magento compatible con SHA-256 y parche SUPEE-6
 * Multiple Divisa
 * Función Callback para notificación de pagos desde Redsys
 * Documentación actualizada
+* Posibilidad de probar en producción con la restricción de ip de desarrolladores
+* Opción de mostrar errores de Redsys a los clientes
+* Envió de factura al cliente
 
 ### Requisitos
 
