@@ -117,18 +117,48 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
         $status = Mage::getStoreConfig('payment/redsys/redirect_status', Mage::app()->getStore());
         $state = 'new';
         $comment = $this->__('enters TPV');
-        $isCustomerNotified = true;
-        $_order->setState($state, $status, $comment, $isCustomerNotified);
+
+        $isCustomerNotified = false;
+        $isVisibleOnFront = false;
+
+        if(Mage::getStoreConfig('payment/redsys/notify_clients_states', Mage::app()->getStore()) && Mage::getStoreConfig('payment/redsys/notify_by_email', Mage::app()->getStore())){
+            $isCustomerNotified = true;
+        }
+
+        if(Mage::getStoreConfig('payment/redsys/notify_clients_states', Mage::app()->getStore()) && Mage::getStoreConfig('payment/redsys/notify_by_frontend', Mage::app()->getStore())){
+            $isVisibleOnFront = true;
+        }
+
+        $this->setCustomState($_order,$state, $status, $comment, $isCustomerNotified,$isVisibleOnFront);
         $_order->save();
+
+        if($isCustomerNotified){
+            $_order->sendOrderUpdateEmail($isCustomerNotified, $comment);
+        }
     }
 
     public function stateConfirmTpv($_order,$comment){
         $this->fixCreditCustomer();
         $status = Mage::getStoreConfig('payment/redsys/confirm_status', Mage::app()->getStore());
         $state = 'processing';
-        $isCustomerNotified = true;
-        $_order->setState($state, $status, $comment, $isCustomerNotified);
+
+        $isCustomerNotified = false;
+        $isVisibleOnFront = false;
+
+        if(Mage::getStoreConfig('payment/redsys/notify_clients_states', Mage::app()->getStore()) && Mage::getStoreConfig('payment/redsys/notify_by_email', Mage::app()->getStore())){
+            $isCustomerNotified = true;
+        }
+
+        if(Mage::getStoreConfig('payment/redsys/notify_clients_states', Mage::app()->getStore()) && Mage::getStoreConfig('payment/redsys/notify_by_frontend', Mage::app()->getStore())){
+            $isVisibleOnFront = true;
+        }
+
+        $this->setCustomState($_order,$state, $status, $comment, $isCustomerNotified,$isVisibleOnFront);
         $_order->save();
+
+        if($isCustomerNotified){
+            $_order->sendOrderUpdateEmail($isCustomerNotified, $comment);
+        }
     }
 
     public function stateErrorTpv($_order,$errorMessage=null){
@@ -136,15 +166,29 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
         $status = Mage::getStoreConfig('payment/redsys/error_status', Mage::app()->getStore());
         $state = 'canceled';
         $comment = $this->__('Error in TPV order canceled.');
-        $isCustomerNotified = true;
+
+        $isCustomerNotified = false;
+        $isVisibleOnFront = false;
+
+        if(Mage::getStoreConfig('payment/redsys/notify_clients_states', Mage::app()->getStore()) && Mage::getStoreConfig('payment/redsys/notify_by_email', Mage::app()->getStore())){
+            $isCustomerNotified = true;
+        }
+
+        if(Mage::getStoreConfig('payment/redsys/notify_clients_states', Mage::app()->getStore()) && Mage::getStoreConfig('payment/redsys/notify_by_frontend', Mage::app()->getStore())){
+            $isVisibleOnFront = true;
+        }
 
         if($errorMessage){
             $comment = $this->__('Failed: %s',$errorMessage);
         }
 
-        $_order->setState($state, $status, $comment, $isCustomerNotified);
+        $this->setCustomState($_order,$state, $status, $comment, $isCustomerNotified,$isVisibleOnFront);
         $_order->registerCancellation("")->save();
         $_order->save();
+
+        if($isCustomerNotified){
+            $_order->sendOrderUpdateEmail($isCustomerNotified, $comment);
+        }
     }
 
 
@@ -385,5 +429,22 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
         }
 
         return true;
+    }
+
+    public function setCustomState($order ,$state, $status = false, $comment = '', $isCustomerNotified = null, $isVisibleOnFront=false){
+        $order->setData('state', $state);
+
+        // add status history
+        if ($status) {
+            if ($status === true) {
+                $status = $order->getConfig()->getStateDefaultStatus($state);
+            }
+            $order->setStatus($status);
+            $history = $order->addStatusHistoryComment($comment, false); // no sense to set $status again
+            $history->setIsCustomerNotified($isCustomerNotified); // for backwards compatibility
+            $history->setIsVisibleOnFront($isVisibleOnFront);
+        }
+
+        return $this;
     }
 }

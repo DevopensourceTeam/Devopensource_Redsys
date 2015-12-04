@@ -41,3 +41,6 @@
 "Display Error Messages Clients","Mostrar mensajes de error redsys a los clientes"
 "Your version:","Tu versión:"
 "Latest version stable:","Última versión estable:"
+"Notify clients states","Notificar estados de pedido al cliente"
+"Notify by email","Notificar por email"
+"Notify by frontend","Notificar por frontend"
