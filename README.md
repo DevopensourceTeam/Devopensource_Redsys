@@ -1,6 +1,8 @@
 Módulo TPV Redsys para Magento
 ===========
 
+[![Join the chat at https://gitter.im/DevopensourceTeam/Devopensource_Redsys](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/DevopensourceTeam/Devopensource_Redsys?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Método de pago para Redsys para Magento compatible con SHA-256 y parche SUPEE-6788.
 
 ### Características
