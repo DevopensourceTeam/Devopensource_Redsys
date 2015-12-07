@@ -14,7 +14,7 @@ class Devopensource_Notification_Block_Adminhtml_Notifications extends Mage_Admi
     {
 
         $notification = Mage::getModel('devopennotify/notification')->getCollection()
-            ->addFieldToFilter('read', 0);
+            ->addFieldToFilter('is_read', 0);
 
         return $notification;
     }

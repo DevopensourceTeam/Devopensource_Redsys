@@ -38,7 +38,7 @@ $table = $installer->getConnection()->newTable($installer->getTable('devopennoti
     ->addColumn('url', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
         'nullable' => true,
     ), 'url')
-    ->addColumn('read', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
+    ->addColumn('is_read', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
         'nullable' => false,
         'default'  => 0
     ), 'read')

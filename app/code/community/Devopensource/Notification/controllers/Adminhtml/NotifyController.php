@@ -31,7 +31,7 @@ class Devopensource_Notification_Adminhtml_NotifyController extends Mage_Adminht
         // Guardamos la notificacion en variable para poder ser usada en la funcion _readNotificationInbox
         $this->_notification    = $notification;
 
-        $notification->setRead(1);
+        $notification->setIsRead(1);
         $notification->save();
     }
 
