@@ -24,6 +24,7 @@ Método de pago para Redsys para Magento compatible con SHA-256 y parche SUPEE-6
 * Opción de mostrar errores de Redsys a los clientes
 * Envió de factura al cliente
 * Guardar transacciones
+* Envio de correo a cliente (si esta habilitado esta config.) y admin si ha habido una cancelación / error en la pasarela de pago
 
 
 ### Requisitos
