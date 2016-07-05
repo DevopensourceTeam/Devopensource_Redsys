@@ -11,6 +11,13 @@ class Devopensource_Redsys_IndexController extends Mage_Core_Controller_Front_Ac
         $orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
         $_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
 
+        if($_order->getState() != 'new' || $_order->getStatus() != 'pending' ) {
+            $response = Mage::app()->getResponse();
+            $response->setRedirect(Mage::getBaseUrl());
+            $response->sendResponse();
+            exit;
+        }
+
         $nameStore = Mage::getStoreConfig('payment/redsys/namestore', Mage::app()->getStore());
         $merchantcode = Mage::getStoreConfig('payment/redsys/merchantcode', Mage::app()->getStore());
         $sha256key = Mage::getStoreConfig('payment/redsys/sha256key', Mage::app()->getStore());
