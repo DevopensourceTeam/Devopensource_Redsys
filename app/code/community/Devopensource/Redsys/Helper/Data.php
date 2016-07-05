@@ -190,8 +190,7 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
             $_order->sendOrderUpdateEmail($isCustomerNotified, $comment);
         }
     }
-
-
+    
     public function recoveryCart(){
         $recoveryCart = Mage::getStoreConfig('payment/redsys/recover_cart', Mage::app()->getStore());
 
@@ -262,7 +261,6 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
 
         }
     }
-
 
     public function comentarioReponse($Ds_Response, $Ds_pay_method='')
     {
@@ -446,5 +444,47 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
         }
 
         return $this;
+    }
+
+    public function notifyEmailCustomer($message, $email){
+
+        $data               = array('message' => $message);
+        $emailTemplate      = Mage::getModel('core/email_template')->loadDefault('redsys_notify_customer');
+        $senderName         = Mage::getStoreConfig('trans_email/ident_general/name');
+        $senderEmail        = Mage::getStoreConfig('trans_email/ident_general/email');
+        $processedTemplate  = $emailTemplate->getProcessedTemplate($data);
+
+        $mail = Mage::getModel('core/email')
+            ->setToName($senderName)
+            ->setReplyTo($senderEmail)
+            ->setToEmail($email)
+            ->setBody($processedTemplate)
+            ->setSubject($this->__('Order canceled from TPV'))
+            ->setFromEmail($senderEmail)
+            ->setFromName($senderName)
+            ->setType('html');
+
+        $mail->send();
+    }
+
+    public function notifyEmailAdmin($message, $email){
+
+        $data               = array('message' => $message, 'email' => $email);
+        $emailTemplate      = Mage::getModel('core/email_template')->loadDefault('redsys_notify_admin');
+        $senderName         = Mage::getStoreConfig('trans_email/ident_general/name');
+        $senderEmail        = Mage::getStoreConfig('trans_email/ident_general/email');
+        $processedTemplate  = $emailTemplate->getProcessedTemplate($data);
+
+        $mail = Mage::getModel('core/email')
+            ->setToName($senderName)
+            ->setReplyTo($email)
+            ->setToEmail($senderEmail)
+            ->setBody($processedTemplate)
+            ->setSubject($this->__('Order canceled from TPV'))
+            ->setFromEmail($senderEmail)
+            ->setFromName($senderName)
+            ->setType('html');
+
+        $mail->send();
     }
 }

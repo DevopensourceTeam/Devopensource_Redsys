@@ -8,7 +8,6 @@ class Devopensource_Redsys_IndexController extends Mage_Core_Controller_Front_Ac
     public function redirectAction()
     {
         $this->helper = Mage::helper('devopensource_redsys');
-
         $orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
         $_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
 
@@ -24,6 +23,8 @@ class Devopensource_Redsys_IndexController extends Mage_Core_Controller_Front_Ac
         $currency            = $this->helper->getCurrency();
 
         $this->helper->stateInTpv($_order);
+
+        Mage::dispatchEvent('redsys_redirect',  array('order' => $_order));
 
         $transaction_amount = number_format($_order->getTotalDue(), 2, '', '');
         $amount = (float)$transaction_amount;
@@ -120,6 +121,8 @@ class Devopensource_Redsys_IndexController extends Mage_Core_Controller_Front_Ac
                         $order->sendNewOrderEmail();
                         $this->helper->createInvoice($order);
                         $this->helper->createTransaction($order,$decodeData);
+
+                        Mage::dispatchEvent('redsys_payment_accepted',  array('order' => $order));
                     } catch (Exception $e) {
                         $order->addStatusHistoryComment($this->__("TPV Error: %s",$e->getMessage()), false);
                         $order->save();
@@ -147,6 +150,8 @@ class Devopensource_Redsys_IndexController extends Mage_Core_Controller_Front_Ac
 
     public function cancelAction()
     {
+        $this->helper = Mage::helper('devopensource_redsys');
+
         if (!empty($_GET) && Mage::getStoreConfig('payment/redsys/display_error_clients',Mage::app()->getStore()))
         {
             $this->helper = Mage::helper('devopensource_redsys');
@@ -164,22 +169,35 @@ class Devopensource_Redsys_IndexController extends Mage_Core_Controller_Front_Ac
                 $responsecode = intval($response);
                 $error = $this->helper->comentarioReponse($responsecode);
             }
+
         }
 
         if(!isset($error)){
             $error = $this->__('Denied transaction from Redsys.');
         }
 
-        $this->helper = Mage::helper('devopensource_redsys');
         $session = Mage::getSingleton('checkout/session');
+        $_orderIncId = $session->getData('last_real_order_id');
+        $_order = Mage::getModel('sales/order')->loadByIncrementId($_orderIncId);
+
+        if(Mage::getStoreConfig('payment/redsys/notify_by_email', Mage::app()->getStore())){
+            $this->helper->notifyEmailCustomer($this->__('Cancelled payment order %s from the payment gateway TPV.', '#'.$_orderIncId), $_order->getCustomerEmail());
+        }
+
+        $this->helper->notifyEmailAdmin($this->__('Cancelled payment order %s from the payment gateway TPV.', '#'.$_orderIncId), $_order->getCustomerEmail());
+
+        Mage::dispatchEvent('redsys_payment_cancel',  array('session' => $session));
+
         $this->helper->recoveryCart();
         $session->addError($error);
+
         $this->_redirect('checkout/cart');
     }
 
     public function successAction()
     {
         $session = Mage::getSingleton('checkout/session');
+        Mage::dispatchEvent('redsys_payment_success', array('session' => $session));
         $session->addsuccess($this->__('Authorized transaction'));
         $this->_redirect('checkout/onepage/success');
     }

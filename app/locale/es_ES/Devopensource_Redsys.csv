@@ -44,3 +44,5 @@
 "Notify clients states","Notificar estados de pedido al cliente"
 "Notify by email","Notificar por email"
 "Notify by frontend","Notificar por frontend"
+"Cancelled payment order %s from the payment gateway TPV.","Cancelado pago del pedido %s desde la pasarela de pago del TPV."
+"Order canceled from TPV","Pedido cancelado desde TPV"

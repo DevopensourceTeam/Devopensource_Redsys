@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Devopensource_Redsys>
-            <version>0.2.0</version>
+            <version>0.2.1</version>
         </Devopensource_Redsys>
     </modules>
     <global>
@@ -25,6 +25,20 @@
                 <class>Devopensource_Redsys_Helper</class>
             </devopensource_redsys>
         </helpers>
+        <template>
+            <email>
+                <redsys_notify_customer translate="label" module="devopensource_redsys">
+                    <label>Redsys Notify Customer</label>
+                    <file>redsys_notify_customer.html</file>
+                    <type>html</type>
+                </redsys_notify_customer>
+                <redsys_notify_admin translate="label" module="devopensource_redsys">
+                    <label>Redsys Notify Admin</label>
+                    <file>redsys_notify_admin.html</file>
+                    <type>html</type>
+                </redsys_notify_admin>
+            </email>
+        </template>
     </global>
     <frontend>
         <routers>
@@ -78,7 +92,7 @@
                 <display_error_clients>0</display_error_clients>
                 <recover_cart>1</recover_cart>
                 <transaction>0</transaction>
-                <callback>1</callback>
+                <callback>0</callback>
             </redsys>
         </payment>
     </default>
