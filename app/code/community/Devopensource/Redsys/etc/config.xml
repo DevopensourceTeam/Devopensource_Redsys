@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Devopensource_Redsys>
-            <version>0.2.1</version>
+            <version>0.2.2</version>
         </Devopensource_Redsys>
     </modules>
     <global>
@@ -71,6 +71,18 @@
             </modules>
         </translate>
     </adminhtml>
+    <crontab>
+        <jobs>
+            <redsys_cancel_unpaid_orders>
+                <schedule>
+                    <cron_expr>*/5 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>redsys/cron::cancelUnpaidOrders</model>
+                </run>
+            </redsys_cancel_unpaid_orders>
+        </jobs>
+    </crontab>
     <default>
         <payment>
             <redsys>
@@ -93,6 +105,8 @@
                 <recover_cart>1</recover_cart>
                 <transaction>0</transaction>
                 <callback>0</callback>
+                <cancel_unpaid_orders>0</cancel_unpaid_orders>
+                <cancel_unpaid_orders_min>30</cancel_unpaid_orders_min>
             </redsys>
         </payment>
     </default>

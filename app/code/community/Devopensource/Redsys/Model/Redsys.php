@@ -3,7 +3,8 @@
 class Devopensource_Redsys_Model_Redsys extends Mage_Payment_Model_Method_Abstract
 {
 
-    protected $_code = 'redsys';
+    CONST CODE          = 'redsys';
+    protected $_code    = 'redsys';
 
     protected $_isGateway               = true;
     protected $_canAuthorize            = true;
