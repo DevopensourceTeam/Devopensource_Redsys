@@ -96,15 +96,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </terminal>
-                        <currency translate="label">
-                            <label>Currency</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>redsys/Adminhtml_Currency</source_model>
-                            <sort_order>80</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </currency>
                         <autoinvoice translate="label comment">
                             <label>Create invoice automatically</label>
                             <comment>Only if payment is completed successfully</comment>
@@ -125,19 +116,10 @@
                             <show_in_store>1</show_in_store>
                             <depends><autoinvoice>1</autoinvoice></depends>
                         </sendinvoice>
-                        <order_status translate="label" module="payment">
-                            <label>New order status</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_order_status</source_model>
-                            <sort_order>120</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </order_status>
                         <redirect_status translate="label">
                             <label>Estado para pedido al entrar en TPV</label>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_order_status</source_model>
+                            <source_model>redsys/system_config_source_select_state_new</source_model>
                             <sort_order>130</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -146,25 +128,16 @@
                         <confirm_status translate="label">
                             <label>Order state validated by redsys</label>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_order_status</source_model>
+                            <source_model>redsys/system_config_source_select_state_processing</source_model>
                             <sort_order>140</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </confirm_status>
-                        <error_status translate="label">
-                            <label>Order state canceled by redsys</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_order_status</source_model>
-                            <sort_order>140</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </error_status>
                         <message_credit_card translate="label">
                             <label>Description payment method</label>
                             <frontend_type>textarea</frontend_type>
-                            <sort_order>170</sort_order>
+                            <sort_order>150</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -173,16 +146,28 @@
                             <label>Notify clients states</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>171</sort_order>
+                            <sort_order>160</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </notify_clients_states>
+                        <notify_order_status translate="label">
+                            <label>Notify by email</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>redsys/system_config_source_multiselect_status</source_model>
+                            <sort_order>170</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <notify_clients_states>1</notify_clients_states>
+                            </depends>
+                        </notify_order_status>
                         <notify_by_email translate="label">
                             <label>Notify by email</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>172</sort_order>
+                            <sort_order>180</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -192,26 +177,17 @@
                             <label>Notify by frontend</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>173</sort_order>
+                            <sort_order>190</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends><notify_clients_states>1</notify_clients_states></depends>
                         </notify_by_frontend>
-                        <display_error_clients translate="label">
-                            <label>Display Error Messages Clients</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>175</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </display_error_clients>
                         <recover_cart translate="label">
                             <label>Recovery cart</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>180</sort_order>
+                            <sort_order>210</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -221,7 +197,7 @@
                             <label>Callback</label>
                             <frontend_type>select</frontend_type>
                             <source_model>redsys/Adminhtml_Callback</source_model>
-                            <sort_order>185</sort_order>
+                            <sort_order>220</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -230,7 +206,7 @@
                         <callbackurl translate="label comment">
                             <label>Url Callback</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>190</sort_order>
+                            <sort_order>230</sort_order>
                             <comment><![CDATA[Change if necessary.]]></comment>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -242,7 +218,7 @@
                             <label>Cancel Unpaid Orders</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>195</sort_order>
+                            <sort_order>240</sort_order>
                             <comment><![CDATA[Automatically cancel orders paid elapsed time indicated in the field below]]></comment>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -251,7 +227,7 @@
                         <cancel_unpaid_orders_min translate="label comment">
                             <label>Time to Cancel Unpaid Orders</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>200</sort_order>
+                            <sort_order>250</sort_order>
                             <comment><![CDATA[Minutes to cancel order]]></comment>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>

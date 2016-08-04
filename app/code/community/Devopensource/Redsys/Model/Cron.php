@@ -12,11 +12,14 @@ class Devopensource_Redsys_Model_Cron {
 
         $orders = Mage::getModel('sales/order')->getCollection()
             ->addFieldToFilter('status', array('in' => array('pending')))
+        // ->addFieldToFilter('state', array('in' => array('new')))
             ->setOrder('created_at', 'desc');
 
         foreach ($orders as $_order){
 
             $_paymentMethod = $_order->getPayment()->getMethod();
+
+            Mage::log( $_order->getIncrementId(), null, 'check_payment.log');
 
             if($_paymentMethod != Devopensource_Redsys_Model_Redsys::CODE){
                 continue;
@@ -27,9 +30,17 @@ class Devopensource_Redsys_Model_Cron {
             $_dateToday          = Mage::getModel('core/date')->date($_format);
             $_dateToCancel       = date($_format, strtotime( $_dateCreatedAt. ' + '.Mage::getStoreConfig('payment/redsys/cancel_unpaid_orders_min', Mage::app()->getStore()).' minutes'));
 
+            Mage::log( $_order->getIncrementId(), null, 'redsys_unpaid_orders_date.log');
+            Mage::log( $_order->getCreatedAt(), null, 'redsys_unpaid_orders_date.log');
+            Mage::log($_dateToCancel, null, 'redsys_unpaid_orders_date.log');
+            Mage::log($_dateToday, null, 'redsys_unpaid_orders_date.log');
+            Mage::log($_dateCreatedAt, null, 'redsys_unpaid_orders_date.log');
+
             if( $_dateToday > $_dateToCancel){
 
                 $_order->cancel()->save();
+
+                Mage::log($_order->getIncrementId().' cancelado, pedido no pagado desde redsys', null, 'redsys_unpaid_orders.log');
             }
 
         }

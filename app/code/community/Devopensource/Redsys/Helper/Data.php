@@ -97,16 +97,25 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
 
     }
 
-    public function getCurrency(){
-        $currency = Mage::getStoreConfig('payment/redsys/currency', Mage::app()->getStore());
+    public function getCurrency($order){
+        $currency = $order->getOrderCurrency()->getCurrencyCode();
 
         switch ($currency) {
-            case '3':
-                return '392';
-            case '2':
-                return '826';
-            case '1':
+            case 'AUD':
+                return '036';
+            case 'CAD':
+                return '124';
+            case 'USD':
                 return '840';
+            case 'GBP':
+                return '826';
+            case 'CHF':
+                return '756';
+            case 'JPY':
+                return '392';
+            case 'CNY':
+                return '156';
+            case 'EUR':
             default:
                 return '978';
         }
@@ -118,23 +127,9 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
         $state = 'new';
         $comment = $this->__('enters TPV');
 
-        $isCustomerNotified = false;
-        $isVisibleOnFront = false;
-
-        if(Mage::getStoreConfig('payment/redsys/notify_clients_states', Mage::app()->getStore()) && Mage::getStoreConfig('payment/redsys/notify_by_email', Mage::app()->getStore())){
-            $isCustomerNotified = true;
-        }
-
-        if(Mage::getStoreConfig('payment/redsys/notify_clients_states', Mage::app()->getStore()) && Mage::getStoreConfig('payment/redsys/notify_by_frontend', Mage::app()->getStore())){
-            $isVisibleOnFront = true;
-        }
-
-        $this->setCustomState($_order,$state, $status, $comment, $isCustomerNotified,$isVisibleOnFront);
+        $this->setCustomState($_order,$state, $status, $comment, false, false);
         $_order->save();
 
-        if($isCustomerNotified){
-            $_order->sendOrderUpdateEmail($isCustomerNotified, $comment);
-        }
     }
 
     public function stateConfirmTpv($_order,$comment){
@@ -142,102 +137,116 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
         $status = Mage::getStoreConfig('payment/redsys/confirm_status', Mage::app()->getStore());
         $state = 'processing';
 
-        $isCustomerNotified = false;
-        $isVisibleOnFront = false;
+        //  Notificacion privada
+        $this->setCustomState($_order,$state, $status, $comment, false , false);
 
-        if(Mage::getStoreConfig('payment/redsys/notify_clients_states', Mage::app()->getStore()) && Mage::getStoreConfig('payment/redsys/notify_by_email', Mage::app()->getStore())){
-            $isCustomerNotified = true;
-        }
-
-        if(Mage::getStoreConfig('payment/redsys/notify_clients_states', Mage::app()->getStore()) && Mage::getStoreConfig('payment/redsys/notify_by_frontend', Mage::app()->getStore())){
-            $isVisibleOnFront = true;
-        }
-
-        $this->setCustomState($_order,$state, $status, $comment, $isCustomerNotified,$isVisibleOnFront);
         $_order->save();
 
-        if($isCustomerNotified){
+        $allowStatuses = explode(',', Mage::getStoreConfig('payment/redsys/notify_order_status',Mage::app()->getStore()));
+
+        if(in_array($state, $allowStatuses) && Mage::getStoreConfig('payment/redsys/notify_clients_states', Mage::app()->getStore())){
+
+            $comment = $this->__('TPV payment accepted.');
+
+            $isCustomerNotified = false;
+            $isVisibleOnFront = false;
+
+            if(Mage::getStoreConfig('payment/redsys/notify_by_email', Mage::app()->getStore())){
+                $isCustomerNotified = true;
+            }
+
+            if(Mage::getStoreConfig('payment/redsys/notify_by_frontend', Mage::app()->getStore())){
+                $isVisibleOnFront = true;
+            }
+
+            $this->fixCreditCustomer();
+
+            //  Notificación privada de cancelación
+            $this->setCustomState($_order,$state, $status, $comment, $isCustomerNotified , $isVisibleOnFront);
+
+            $_order->save();
+
             $_order->sendOrderUpdateEmail($isCustomerNotified, $comment);
+            
         }
+
     }
 
-    public function stateErrorTpv($_order,$errorMessage=null){
+    public function stateErrorTpv($_order,$errorMessage = null){
         $this->fixCreditCustomer();
-        $status = Mage::getStoreConfig('payment/redsys/error_status', Mage::app()->getStore());
-        $state = 'canceled';
+        $state  = 'canceled';
+        $status = 'canceled';
         $comment = $this->__('Error in TPV order canceled.');
-
-        $isCustomerNotified = false;
-        $isVisibleOnFront = false;
-
-        if(Mage::getStoreConfig('payment/redsys/notify_clients_states', Mage::app()->getStore()) && Mage::getStoreConfig('payment/redsys/notify_by_email', Mage::app()->getStore())){
-            $isCustomerNotified = true;
-        }
-
-        if(Mage::getStoreConfig('payment/redsys/notify_clients_states', Mage::app()->getStore()) && Mage::getStoreConfig('payment/redsys/notify_by_frontend', Mage::app()->getStore())){
-            $isVisibleOnFront = true;
-        }
 
         if($errorMessage){
             $comment = $this->__('Failed: %s',$errorMessage);
         }
 
-        $this->setCustomState($_order,$state, $status, $comment, $isCustomerNotified,$isVisibleOnFront);
-        $_order->registerCancellation("")->save();
+        // Notificacion privada
+        $this->setCustomState($_order,null, $status, $comment, false, false);
         $_order->save();
 
-        if($isCustomerNotified){
-            $_order->sendOrderUpdateEmail($isCustomerNotified, $comment);
+        $allowStatuses = explode(',', Mage::getStoreConfig('payment/redsys/notify_order_status',Mage::app()->getStore()));
+
+        if(in_array($state, $allowStatuses)
+            && Mage::getStoreConfig('payment/redsys/notify_clients_states', Mage::app()->getStore())){
+
+            $isCustomerNotified = false;
+            $isVisibleOnFront = false;
+
+            if( Mage::getStoreConfig('payment/redsys/notify_by_email', Mage::app()->getStore())){
+                $isCustomerNotified = true;
+            }
+
+            if(Mage::getStoreConfig('payment/redsys/notify_by_frontend', Mage::app()->getStore())){
+                $isVisibleOnFront = true;
+            }
+
+            $this->fixCreditCustomer();
+
+            $comment = $this->__('Cancelled payment from the payment gateway TPV.');
+
+            //  Notificación privada de cancelación
+            //$this->setCustomState($_order,$state, $status, $comment, $isCustomerNotified , $isVisibleOnFront);
+            $history = $_order->addStatusHistoryComment($comment, false);
+            $history->setIsCustomerNotified($isCustomerNotified);
+            $history->setIsVisibleOnFront($isVisibleOnFront);
+
+            $_order->save();
+
+            $_order->sendOrderUpdateEmail();
+
         }
     }
-    
-    public function recoveryCart(){
+
+    public function recoveryCart($_order){
+
+
         $recoveryCart = Mage::getStoreConfig('payment/redsys/recover_cart', Mage::app()->getStore());
-
         if($recoveryCart){
-            $_order = new Mage_Sales_Model_Order();
-            $orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
-            $_order->loadByIncrementId($orderId);
+            try{
+                $quote = Mage::getModel('sales/quote')->load($_order->getQuoteId());
 
-            $items = $_order->getAllVisibleItems();
-            $cart = Mage::getSingleton('checkout/cart');
-            foreach ($items as $itemId => $item){
-                $cart->addOrderItem($item);
-            }
-            $cart->save();
+                $quote->getBillingAddress()->setSaveInAddressBook(0);
+                $quote->getShippingAddress()->setSaveInAddressBook(0);
 
-            //@todo Volver a poner la direccion y reenviar al checkout
-        }
+                if ($quote->getId()) {
 
+                    $quote->setIsActive(1)
+                        ->setReservedOrderId(null)
+                        ->save();
 
-    }
+                    Mage::getSingleton('checkout/session')
+                        ->replaceQuote($quote)
+                        ->unsLastRealOrderId();
 
-    public function restoreStock($order){
-        $items = $order->getAllItems();
-        if($items)
-        {
-            foreach($items as $item)
-            {
-                $quantity = $item->getQtyOrdered();
-                $product_id = $item->getProductId();
-                $stock = Mage::getModel('cataloginventory/stock_item')->loadByProduct($product_id);
-                if($stock->getManageStock()){
-                    $stockQty = $stock->getQty();
-                    $stock->setQty($stockQty + $quantity);
-
-                    if($stockQty + $quantity <= 0 && $stock->getBackorders()==0)
-                    {
-                        $stock->setIsInStock(false);
-                    }elseif($stockQty + $quantity > 0){
-                        $stock->setIsInStock(true);
-                    }
-
-                    $stock->save();
                 }
-
+            }catch (exception $e){
+                Mage::log($e->getMessage(),null,"redsys.log");
             }
         }
     }
+
 
     public function createInvoice($order){
         $autoinvoice = Mage::getStoreConfig('payment/redsys/autoinvoice', Mage::app()->getStore());
@@ -430,6 +439,13 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
     }
 
     public function setCustomState($order ,$state, $status = false, $comment = '', $isCustomerNotified = null, $isVisibleOnFront=false){
+        if($state=="canceled"){
+            $order->getPayment()->cancel();
+            $order->registerCancellation($comment);
+            Mage::dispatchEvent('order_cancel_after', array('order' => $order));
+            return $this;
+        }
+
         $order->setData('state', $state);
 
         // add status history
@@ -444,47 +460,5 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
         }
 
         return $this;
-    }
-
-    public function notifyEmailCustomer($message, $email){
-
-        $data               = array('message' => $message);
-        $emailTemplate      = Mage::getModel('core/email_template')->loadDefault('redsys_notify_customer');
-        $senderName         = Mage::getStoreConfig('trans_email/ident_general/name');
-        $senderEmail        = Mage::getStoreConfig('trans_email/ident_general/email');
-        $processedTemplate  = $emailTemplate->getProcessedTemplate($data);
-
-        $mail = Mage::getModel('core/email')
-            ->setToName($senderName)
-            ->setReplyTo($senderEmail)
-            ->setToEmail($email)
-            ->setBody($processedTemplate)
-            ->setSubject($this->__('Order canceled from TPV'))
-            ->setFromEmail($senderEmail)
-            ->setFromName($senderName)
-            ->setType('html');
-
-        $mail->send();
-    }
-
-    public function notifyEmailAdmin($message, $email){
-
-        $data               = array('message' => $message, 'email' => $email);
-        $emailTemplate      = Mage::getModel('core/email_template')->loadDefault('redsys_notify_admin');
-        $senderName         = Mage::getStoreConfig('trans_email/ident_general/name');
-        $senderEmail        = Mage::getStoreConfig('trans_email/ident_general/email');
-        $processedTemplate  = $emailTemplate->getProcessedTemplate($data);
-
-        $mail = Mage::getModel('core/email')
-            ->setToName($senderName)
-            ->setReplyTo($email)
-            ->setToEmail($senderEmail)
-            ->setBody($processedTemplate)
-            ->setSubject($this->__('Order canceled from TPV'))
-            ->setFromEmail($senderEmail)
-            ->setFromName($senderName)
-            ->setType('html');
-
-        $mail->send();
     }
 }
