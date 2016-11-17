@@ -11,7 +11,7 @@ class Devopensource_Redsys_IndexController extends Mage_Core_Controller_Front_Ac
         $orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
         $_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
 
-        if($_order->getState() != 'new' || $_order->getStatus() != 'pending' ) {
+        if($_order->getState() != 'new' && $_order->getStatus() != 'pending' ) {
             $response = Mage::app()->getResponse();
             $response->setRedirect(Mage::getBaseUrl());
             $response->sendResponse();
