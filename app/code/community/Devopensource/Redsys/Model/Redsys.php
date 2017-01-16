@@ -22,7 +22,7 @@ class Devopensource_Redsys_Model_Redsys extends Mage_Payment_Model_Method_Abstra
 
 
     public function getOrderPlaceRedirectUrl() {
-		return Mage::getUrl('redsys/index/redirect', array('_secure' => true));
+        return Mage::getUrl('redsys/index/redirect', array('_secure' => true, 'token' => uniqid()));
 	}
 
 
