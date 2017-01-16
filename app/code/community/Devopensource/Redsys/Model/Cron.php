@@ -38,7 +38,12 @@ class Devopensource_Redsys_Model_Cron {
 
             if( $_dateToday > $_dateToCancel){
 
-                $_order->cancel()->save();
+
+                $comment = "cancelado por cron, pedido no pagado desde redsys";
+                $_order->getPayment()->cancel();
+                $_order->registerCancellation($comment);
+                Mage::dispatchEvent('order_cancel_after', array('order' => $_order));
+                $_order->save();
 
                 Mage::log($_order->getIncrementId().' cancelado, pedido no pagado desde redsys', null, 'redsys_unpaid_orders.log');
             }
