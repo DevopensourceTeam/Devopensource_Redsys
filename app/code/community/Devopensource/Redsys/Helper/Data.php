@@ -184,7 +184,6 @@ class Devopensource_Redsys_Helper_Data extends Mage_Core_Helper_Abstract {
 
         // Notificacion privada
         $this->setCustomState($_order, $state, $status, $comment, false, false);
-        Mage::dispatchEvent('order_cancel_after', array('order' => $_order));
         $_order->save();
 
         $allowStatuses = explode(',', Mage::getStoreConfig('payment/redsys/notify_order_status',Mage::app()->getStore()));
